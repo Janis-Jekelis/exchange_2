@@ -1,9 +1,15 @@
 <?php
 declare(strict_types=1);
 
-use App\Application;
+use App\Converter;
 
 require_once "vendor/autoload.php";
-$result = new Application();
-echo number_format($result->calculate(), 2) . " " . $result->getTargetCurrency() . PHP_EOL ;
-echo "";
+$request = new Converter();
+$rates=$request->calculate();
+foreach ($rates as $address=>$value){
+    echo $address . "  " . number_format($value,2). " " .  $request->getTargetCurrency();
+   if ($value==max($rates))echo "  (Recommended)";
+   echo PHP_EOL;
+}
+
+
