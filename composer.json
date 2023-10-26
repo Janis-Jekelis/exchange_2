@@ -1,5 +1,5 @@
 {
-    "name": "inerce/exchange",
+    "name": "inerce/exchange2",
     "autoload": {
         "psr-4": {
             "App\\": "app/"
