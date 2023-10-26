@@ -19,7 +19,6 @@ class ExchangePoint
         return $this->address;
     }
 
-
     public function getRates(): float
     {
         return $this->rates;

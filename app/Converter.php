@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App;
 class Converter
 {
-    private array $rates;
+    private array $exchangePoints;
     private string $baseCurrency;
     private string $targetCurrency;
     private int $amountIn;
@@ -14,10 +14,10 @@ class Converter
     {
         $this->setBaseCurrency();
         $this->setTargetCurrency();
-        $request = new CollectionOfExchangePoint($this->targetCurrency, $this->baseCurrency);
-        foreach ($request->getExchangePoints() as $exchangePoint) {
-            $this->rates[$exchangePoint->getAddress()] = $exchangePoint->getRates();
-        }
+        $this->exchangePoints = (new CollectionOfExchangePoint(
+            $this->targetCurrency, $this->baseCurrency
+        ))->getExchangePoints();
+
     }
 
 
@@ -32,19 +32,20 @@ class Converter
         [$intVal, $this->baseCurrency] = explode(
             " ", readline("please input amount and currency to exchange(ex. 100 USD):"
         ));
-
-      $this->amountIn=intVal($intVal);
+        $this->amountIn = intVal($intVal);
         $this->baseCurrency = strtoupper($this->baseCurrency);
         if (!(is_numeric($this->amountIn))) exit("invalid input");
     }
+
     public function calculate(): array
     {
-        foreach ($this->rates as $address => $rate) {
-            $this->amountOut[$address] = ($this->amountIn) * $rate;
+        foreach ($this->exchangePoints as $exchangePoint) {
+            $this->amountOut[$exchangePoint->getAddress()] = ($this->amountIn) * $exchangePoint->getRates();
         }
         return $this->amountOut;
     }
-        public function getTargetCurrency(): string
+
+    public function getTargetCurrency(): string
     {
         return $this->targetCurrency;
     }
