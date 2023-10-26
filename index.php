@@ -2,7 +2,8 @@
 declare(strict_types=1);
 
 use App\Converter;
-
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 require_once "vendor/autoload.php";
 $request = new Converter();
 $rates=$request->calculate();
